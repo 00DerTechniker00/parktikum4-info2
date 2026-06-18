@@ -13,6 +13,19 @@ class Position {
   +gibSpalte(): int
 }
 
+abstract class Akteur {
+  -position: Position
+  -lebendig: boolean
+  --
+  +Akteur()
+  +gibPosition(): Position
+  +setzePosition(zeile: int, spalte: int): void
+  +setzePosition(position: Position): void
+  +istLebendig(): boolean
+  +setzeGestorben(): void
+  +agiere(aktuellesFeld: Feld, naechstesFeld: Feld, neueTiere: java.util.List): void
+}
+
 class Zaehler {
   -name: String
   -zaehler: int
@@ -28,13 +41,13 @@ class Feld {
   -{static} rand: Random = new Random()
   -tiefe: int
   -breite: int
-  -feld: Tier
+  -feld: Akteur
   --
   +Feld(tiefe: int, breite: int)
   +raeumen(): void
-  +platziere(tier: Tier): void
-  +gibObjektAn(position: Position): Tier
-  +gibObjektAn(zeile: int, spalte: int): Tier
+  +platziere(akteur: Akteur): void
+  +gibObjektAn(position: Position): Akteur
+  +gibObjektAn(zeile: int, spalte: int): Akteur
   +zufaelligeNachbarposition(position: Position): Position
   +freieNachbarposition(position: Position): Position
   +nachbarpositionen(position: Position): Iterator
@@ -49,7 +62,7 @@ class Simulator {
   -{static} HASENGEBURT_WAHRSCHEINLICH: double = 0.08
   -{static} JAEGER_WAHRSCHEINLICH: double = 0.01
   -{static} JAEGER_SCHUSS_ANZAHL: int = 2
-  -tiere: List
+  -akteure: List
   -neueTiere: List
   -feld: Feld
   -naechstesFeld: Feld
@@ -150,18 +163,11 @@ class Fuchs {
 
 abstract class Tier {
   -alter: int
-  -lebendig: boolean
-  -position: Position
   --
   +Tier()
   +agiere(aktuellesFeld: Feld, naechstesFeld: Feld, neueTiere: List): void
-  +istLebendig(): boolean
-  +setzeGestorben(): void
   +gibAlter(): int
   +setzeAlter(alter: int): void
-  +gibPosition(): Position
-  +setzePosition(zeile: int, spalte: int): void
-  +setzePosition(position: Position): void
 }
 
 class Jaeger {
@@ -173,7 +179,9 @@ class Jaeger {
   +toString(): String
 }
 
-Feld *-- Tier
+Akteur *-- Position
+Akteur ..> Feld
+Feld *-- Akteur
 Feld ..> Position
 Simulator *-- Feld
 Simulator *-- Simulationsansicht
@@ -186,8 +194,8 @@ FeldStatistik ..> Feld
 Fuchs --|> Tier
 Fuchs ..> Feld
 Fuchs ..> Position
-Tier *-- Position
+Tier --|> Akteur
 Tier ..> Feld
-Jaeger --|> Tier
+Jaeger --|> Akteur
 Jaeger ..> Feld
 @enduml
