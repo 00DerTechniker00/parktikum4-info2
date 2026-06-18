@@ -40,7 +40,7 @@ public class Simulator
 
 
     // Die Liste der Tiere im Feld
-    private List tiere;
+    private List akteure;
     // Die Liste der gerade geborenen Tiere
     private List neueTiere;
     // Der aktuelle Zustand des Feldes
@@ -79,7 +79,7 @@ public class Simulator
             tiefe = STANDARD_TIEFE;
             breite = STANDARD_BREITE;
         }
-        tiere = new ArrayList();
+        akteure = new ArrayList();
         neueTiere = new ArrayList();
         feld = new Feld(tiefe, breite);
         naechstesFeld = new Feld(tiefe, breite);
@@ -125,18 +125,18 @@ public class Simulator
         schritt++;
         neueTiere.clear();
         
-        // alle Tiere agieren lassen
-        for(Iterator iter = tiere.iterator(); iter.hasNext(); ) {
-            Tier tier = (Tier)iter.next();
-            if(tier.istLebendig()) {
-                tier.agiere(feld, naechstesFeld, neueTiere);
+        // alle Akteure agieren lassen
+        for(Iterator iter = akteure.iterator(); iter.hasNext(); ) {
+            Akteur akt = (Akteur)iter.next();
+            if(akt.istLebendig()) {
+                akt.agiere(feld, naechstesFeld, neueTiere);
             }
             else {
-                iter.remove();   // totes Tier entfernen
+                iter.remove();   // toter Akteur entfernen
             }
         }
-        // neu geborene Tiere in die Liste der Tiere einfuegen.
-        tiere.addAll(neueTiere);
+        // neu entstandene Akteure in die Liste einfuegen.
+        akteure.addAll(neueTiere);
         
         // feld und naechstesFeld am Ende des Schritts austauschen.
         Feld temp = feld;
@@ -154,7 +154,7 @@ public class Simulator
     public void zuruecksetzen()
     {
         schritt = 0;
-        tiere.clear();
+        akteure.clear();
         feld.raeumen();
         naechstesFeld.raeumen();
         bevoelkere(feld);
@@ -175,13 +175,13 @@ public class Simulator
                 if(rand.nextDouble() <= FUCHSGEBURT_WAHRSCHEINLICH) {
                     Fuchs fuchs = new Fuchs(true);
                     fuchs.setzePosition(zeile, spalte);
-                    tiere.add(fuchs);
+                    akteure.add(fuchs);
                     feld.platziere(fuchs);
                 }
                 else if(rand.nextDouble() <= HASENGEBURT_WAHRSCHEINLICH) {
                     Hase hase = new Hase(true);
                     hase.setzePosition(zeile, spalte);
-                    tiere.add(hase);
+                    akteure.add(hase);
                     feld.platziere(hase);
                 }
 
@@ -189,12 +189,12 @@ public class Simulator
                 else if(rand.nextDouble() <= JAEGER_WAHRSCHEINLICH) {
                     Jaeger jaeger = new Jaeger(JAEGER_SCHUSS_ANZAHL);
                     jaeger.setzePosition(zeile, spalte);
-                    tiere.add(jaeger);
+                    akteure.add(jaeger);
                     feld.platziere(jaeger);
                 }
                 // ansonsten die Position leer lassen
             }
         }
-        Collections.shuffle(tiere);
+        Collections.shuffle(akteure);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Iterator;
  * @author Piet
  * @version 2026-06-15
  */
-public class Jaeger extends Tier
+public class Jaeger extends Akteur
 {
     // Die Anzahl der Tiere, auf die in jedem Schritt geschossen wird.
     private int schussAnzahl;
@@ -29,24 +29,24 @@ public class Jaeger extends Tier
      */
     public void agiere(Feld aktuellesFeld, Feld naechstesFeld, List neueTiere)
     {
-        if(istLebendig()) {
-            schiessen(aktuellesFeld);
+        schiessen(aktuellesFeld);
             
-            // Zufallige Bewegung
-            Position neuePosition = naechstesFeld.freieNachbarposition(gibPosition());
-            if(neuePosition != null) {
-                setzePosition(neuePosition);
+        // Zufallige Bewegung
+        Position neuePosition = naechstesFeld.freieNachbarposition(gibPosition());
+        if(neuePosition != null) {
+            setzePosition(neuePosition);
+            naechstesFeld.platziere(this);
+        }
+        else {
+            // Falls kein Platz in der Nachbarschaft ist, bleibe stehen (falls moeglich)
+            if(naechstesFeld.gibObjektAn(gibPosition()) == null)
+            {
                 naechstesFeld.platziere(this);
             }
             else {
-                // Falls kein Platz in der Nachbarschaft ist, bleibe stehen (falls moeglich)
-                if(naechstesFeld.gibObjektAn(gibPosition()) == null) {
-                    naechstesFeld.platziere(this);
-                }
-                else {
-                    // Falls auch der eigene Platz belegt ist (sollte nicht passieren bei Jaegern)
-                    setzeGestorben();
-                }
+                // Falls auch der eigene Platz belegt ist (sollte nicht passieren bei Jaegern)
+                setzeGestorben();
+            }
             }
         }
     }
@@ -60,9 +60,9 @@ public class Jaeger extends Tier
         int treffer = 0;
         while(nachbarPositionen.hasNext() && treffer < schussAnzahl) {
             Position pos = (Position) nachbarPositionen.next();
-            Tier tier = feld.gibObjektAn(pos);
-            if(tier != null && !(tier instanceof Jaeger)) {
-                tier.setzeGestorben();
+            Akteur ziel = feld.gibObjektAn(pos);
+            if(ziel != null && !(ziel instanceof Jaeger)) {
+                ziel.setzeGestorben();
                 treffer++;
             }
         }

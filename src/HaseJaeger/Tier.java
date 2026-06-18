@@ -10,22 +10,18 @@ import java.util.List;
  * @author David J. Barnes and Michael Kolling
  * @version 2003-04-16
  */
-public abstract class Tier
+public abstract class Tier extends Akteur
 {
     // Das Alter dieses Tieres.
     private int alter;
-    // Ist dieses Tier noch lebendig?
-    private boolean lebendig;
-    // Die Position dieses Tieres.
-    private Position position;
 
     /**
      * Erzeuge ein Tier mit Alter Null (ein Neugeborenes).
      */
     public Tier()
     {
+        super();
         alter = 0;
-        lebendig = true;
     }
     
     /**
@@ -39,18 +35,7 @@ public abstract class Tier
      * Pruefe, ob dieses Tier noch lebendig ist.
      * @return true wenn dieses Tier noch lebendig ist.
      */
-    public boolean istLebendig()
-    {
-        return lebendig;
-    }
-
-    /**
-     * Signalisiere diesem Tier, dass es gestorben ist.   :-(
-     */
-    public void setzeGestorben()
-    {
-        lebendig = false;
-    }
+    // Lebenszustand und setzeGestorben() werden von Akteur verwaltet.
     
     /**
      * Liefere das Alter dieses Tieres.
@@ -68,33 +53,5 @@ public abstract class Tier
     public void setzeAlter(int alter)
     {
         this.alter = alter;
-    }
-    
-    /**
-     * Liefere die Position dieses Tieres.
-     * @return die Position dieses Tieres.
-     */
-    public Position gibPosition()
-    {
-        return position;
-    }
-
-    /**
-     * Setze die Position dieses Tieres.
-     * @param zeile die vertikale Koordinate der Position.
-     * @param spalte die horizontale Koordinate der Position.
-     */
-    public void setzePosition(int zeile, int spalte)
-    {
-        this.position = new Position(zeile, spalte);
-    }
-
-    /**
-     * Setze die Position dieses Tieres.
-     * @param position die Position dieses Tieres.
-     */
-    public void setzePosition(Position position)
-    {
-        this.position = position;
     }
 }

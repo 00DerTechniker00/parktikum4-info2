@@ -18,8 +18,8 @@ public class Feld
     
     // Die Tiefe und die Breite des Feldes
     private int tiefe, breite;
-    // Speicher fuer die Tiere
-    private Tier[][] feld;
+    // Speicher fuer die Akteure
+    private Akteur[][] feld;
 
     /**
      * Erzeuge ein Feld mit den angegebenen Dimensionen.
@@ -30,7 +30,7 @@ public class Feld
     {
         this.tiefe = tiefe;
         this.breite = breite;
-        feld = new Tier[tiefe][breite];
+        feld = new Akteur[tiefe][breite];
     }
     
     /**
@@ -46,36 +46,36 @@ public class Feld
     }
         
     /**
-     * Platziere das gegebene Tier an der angegebenen Position.
-     * Wenn an der Position bereits ein Tier eingetragen ist,
-     * geht es verloren.
-     * @param tier das Tier, das platziert werden soll.
+     * Platziere den gegebenen Akteur an der angegebenen Position.
+     * Wenn an der Position bereits ein Akteur eingetragen ist,
+     * geht er verloren.
+     * @param akteur der Akteur, der platziert werden soll.
      */
-    public void platziere(Tier tier)
+    public void platziere(Akteur akteur)
     {
-        Position position = tier.gibPosition();
-        feld[position.gibZeile()][position.gibSpalte()] = tier;
+        Position position = akteur.gibPosition();
+        feld[position.gibZeile()][position.gibSpalte()] = akteur;
     }
     
     /**
-     * Liefere das Tier an der angegebenen Position, falls vorhanden.
+     * Liefere den Akteur an der angegebenen Position, falls vorhanden.
      * @param position die gewuenschte Position.
-     * @return das Tier an der angegebenen Position oder null, wenn
-     *         dort kein Tier ist.
+     * @return der Akteur an der angegebenen Position oder null, wenn
+     *         dort keiner ist.
      */
-    public Tier gibObjektAn(Position position)
+    public Akteur gibObjektAn(Position position)
     {
         return gibObjektAn(position.gibZeile(), position.gibSpalte());
     }
     
     /**
-     * Liefere das Tier an der angegebenen Position, falls vorhanden.
+     * Liefere den Akteur an der angegebenen Position, falls vorhanden.
      * @param zeile die gewuenschte Zeile.
      * @param spalte die gewuenschte Spalte.
-     * @return das Tier an der angegebenen Position oder null, wenn
-     *         dort kein Tier ist.
+     * @return der Akteur an der angegebenen Position oder null, wenn
+     *         dort keiner ist.
      */
-    public Tier gibObjektAn(int zeile, int spalte)
+    public Akteur gibObjektAn(int zeile, int spalte)
     {
         return feld[zeile][spalte];
     }
