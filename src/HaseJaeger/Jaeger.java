@@ -2,6 +2,7 @@ package HaseJaeger;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Ein Modell eines Jaegers.
@@ -38,12 +39,10 @@ public class Jaeger extends Akteur
             naechstesFeld.platziere(this);
         }
         else {
-            // Falls kein Platz in der Nachbarschaft ist, bleibe stehen (falls moeglich)
             if(naechstesFeld.gibObjektAn(gibPosition()) == null) {
                 naechstesFeld.platziere(this);
             }
             else {
-                // Falls auch der eigene Platz belegt ist (sollte nicht passieren bei Jaegern)
                 setzeGestorben();
             }
         }
@@ -56,10 +55,12 @@ public class Jaeger extends Akteur
     {
         Iterator nachbarPositionen = feld.nachbarpositionen(gibPosition());
         int treffer = 0;
-        while(nachbarPositionen.hasNext() && treffer < schussAnzahl) {
+        while(nachbarPositionen.hasNext() && treffer < schussAnzahl)
+        {
             Position pos = (Position) nachbarPositionen.next();
             Akteur ziel = feld.gibObjektAn(pos);
-            if(ziel != null && !(ziel instanceof Jaeger)) {
+            if(ziel != null && !(ziel instanceof Jaeger))
+            {
                 ziel.setzeGestorben();
                 treffer++;
             }
