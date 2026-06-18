@@ -85,10 +85,16 @@ public class Simulator
         naechstesFeld = new Feld(tiefe, breite);
 
         // Eine Ansicht der Zustaende aller Positionen im Feld erzeugen.
-        ansicht = new Simulationsansicht(tiefe, breite);
-        ansicht.setzeFarbe(Fuchs.class, Color.blue);
-        ansicht.setzeFarbe(Hase.class, Color.orange);
-        ansicht.setzeFarbe(Jaeger.class, Color.black);
+        try {
+            ansicht = new Simulationsansicht(tiefe, breite);
+            ansicht.setzeFarbe(Fuchs.class, Color.blue);
+            ansicht.setzeFarbe(Hase.class, Color.orange);
+            ansicht.setzeFarbe(Jaeger.class, Color.black);
+        }
+        catch(java.awt.HeadlessException e) {
+            // In headless-Umgebungen (z.B. CLI-Tests) ist keine GUI moeglich.
+            ansicht = null;
+        }
         
         // Einen gueltigen Startzustand einnehmen.
         zuruecksetzen();
@@ -110,7 +116,7 @@ public class Simulator
      */
     public void simuliere(int schritte)
     {
-        for(int schritt = 1; schritt <= schritte && ansicht.istAktiv(feld); schritt++) {
+        for(int schritt = 1; schritt <= schritte && (ansicht == null || ansicht.istAktiv(feld)); schritt++) {
             simuliereEinenSchritt();
         }
     }
@@ -144,8 +150,10 @@ public class Simulator
         naechstesFeld = temp;
         naechstesFeld.raeumen();
 
-        // das neue Feld in der Ansicht anzeigen.
-        ansicht.zeigeStatus(schritt, feld);
+        // das neue Feld in der Ansicht anzeigen (falls GUI verfuegbar).
+        if(ansicht != null) {
+            ansicht.zeigeStatus(schritt, feld);
+        }
     }
         
     /**
@@ -159,8 +167,10 @@ public class Simulator
         naechstesFeld.raeumen();
         bevoelkere(feld);
         
-        // Zeige den Startzustand in der Ansicht.
-        ansicht.zeigeStatus(schritt, feld);
+        // Zeige den Startzustand in der Ansicht (falls GUI verfuegbar).
+        if(ansicht != null) {
+            ansicht.zeigeStatus(schritt, feld);
+        }
     }
     
     /**
