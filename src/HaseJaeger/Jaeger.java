@@ -53,11 +53,10 @@ public class Jaeger extends Akteur
      */
     private void schiessen(Feld feld)
     {
-        Iterator nachbarPositionen = feld.nachbarpositionen(gibPosition());
         int treffer = 0;
-        while(nachbarPositionen.hasNext() && treffer < schussAnzahl)
+        while(treffer < schussAnzahl)
         {
-            Position pos = (Position) nachbarPositionen.next();
+            Position pos = feld.zufaelligeNachbarposition(this.gibPosition());
             Akteur ziel = feld.gibObjektAn(pos);
             if(ziel != null && !(ziel instanceof Jaeger))
             {
